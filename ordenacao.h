@@ -9,7 +9,7 @@
 
 //Prototipo dos metodos de ordenacao
 void bubbleSort(tipo_lista * );
-void shellSorte(tipo_lista*);
+void shellSort(tipo_lista*);
 void insertionSort(tipo_lista*);
 void insertionSort_ver2(tipo_lista*); 
 void mergeSort(tipo_lista*);

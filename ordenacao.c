@@ -15,7 +15,7 @@ void bubbleSort(tipo_lista *lst) {
         flag_troca = 0;
         for(i=0; i< lst->contador-1; i++) {
          if(lst->lista[i] > lst->lista[i+1]) {
-            aux - lst->lista[i];
+            aux = lst->lista[i];
             lst->lista[i] = lst->lista[i+1];
             lst->lista[i+1] = aux;
             flag_troca++;
@@ -32,7 +32,7 @@ void bubbleSort(tipo_lista *lst) {
  */
 
 void shellSort(tipo_lista *lst) {
-    tipo_lista lista;
+    //tipo_lista lista;
     int salto, i, flag_troca, aux;
     salto = (int) lst->contador/2;
 
@@ -55,7 +55,7 @@ void shellSort(tipo_lista *lst) {
         flag_troca = 0;
         for(i=0; i< lst->contador-1; i++) {
          if(lst->lista[i] > lst->lista[i+1]) {
-            aux - lst->lista[i];
+            aux = lst->lista[i];
             lst->lista[i] = lst->lista[i+1];
             lst->lista[i+1] = aux;
             flag_troca++;
@@ -75,12 +75,6 @@ void shellSort(tipo_lista *lst) {
  * 
  * @param lst 
  */
-
-
-
-
-/*
-
 
 void insertionSort(tipo_lista *lst) {
     int i, pos;
@@ -103,6 +97,12 @@ void insertionSort(tipo_lista *lst) {
 }
 
 
+/**
+ * @brief Insertion Sort Algorithm (another implementation)
+ * 
+ * @param lst 
+ */
+
 void insertionSort_ver2(tipo_lista *lst) {
     int corte, i, aux; 
 
@@ -124,106 +124,68 @@ void insertionSort_ver2(tipo_lista *lst) {
 
 }
 
-
-*/
-
-
 /**
- * @brief Merge Sort Algorithm 
+ * @brief - Funçao que ordena lista pelo método MERGE SORT.
  * 
- */
+ * @param lst - ponteiro para estrutura para o tipo Lista (tipo_lista)
+**/
+    
+void mergeSort(tipo_lista *lst){
+    merge(lst->lista, lst->contador);
+    
+}     
 
-void mergeSort(tipo_lista *lst) {
-
-    if(lst->contador > 0 ) {
-        quebraMergeSort(lst->lista, lst->contador);
-    }
-}
-
-void quebraMergeSort(int *lst, int tamanho) {
-    int meio;
-
-    if(tamanho > 1 ) {
-    meio = (int) tamanho / 2;
-    quebraMergeSort(&(lst[0]), meio);
-    quebraMergeSort(&(lst[meio]), tamanho-meio);
-    //merge(lst, 0, meio);
-
-    }
-}
-
-
-
-void merge(int lst[], int tamanho) {
-    int meio, i, j, posAux, *lstAux;
-
-    lstAux = (int*) malloc(sizeof(int) * tamanho); // aloca vetor do tamanho da lista
-
-
-
-void merge(int lst[], int tamanho) {
+void merge(int lst[], int tamanho){
 
     int meio, i, j, posAux, *lstAux;
 
-    lstAux = (int*) malloc(sizeof(int) * tamanho); // aloca vetor do tamanho da lista
-
-    meio = (int) tamanho / 2;
-
-    i = 0;
-    j = meio;
-    posAux = 0;
-
-    while((i < meio) && (j < tamanho)) {
-    if(lst[i] < lst[j]) {
-        lstAux[posAux++] = lst[i++];
-} else {
-    lstAux[posAux++] = lst[j++];
-}
-    }
-
-
-    while (i < meio) {
-        lstAux[posAux++] = lst[i++];
-    }
-
-
-    while (j < tamanho) {
-        lstAux[posAux++] = lst[j++];
-    }
-
-
-        for (i = 0; i < tamanho; i++) {
-        lst[i] = lstAux[i];
+    if(tamanho>1){//Verifica se é possivel dividir
+        //processo de QUEBRA
+        meio = (int) tamanho/2;
+        merge(&(lst[0]), meio);
+        merge(&(lst[meio]), tamanho - meio);
+    
+    
+        // Processo de Merge
+        //aloca um vetor auxiliar vetAux de tamanho "tamanho"
+        lstAux = (int*) malloc(sizeof(int)*tamanho);
+        i = 0;    
+        j = meio;
+        posAux = 0;
+        
+        //Enquanto i e j não atingiram os seus respectivos 'fins'
+        while(i<meio && j<tamanho){
+            if(lst[i] < lst[j]){
+                lstAux[posAux++] = lst[i++];
+            }else{
+                lstAux[posAux++] = lst[j++];
+            }
+        }
+                        
+        // se uma das listas foi finalizada, copia o restante
+        while (i < meio){
+            lstAux[posAux++] = lst[i++];
+            //posAux = posAux + 1;
+            //i = i + 1;
         }
 
-    free(lstAux);
-} posAux = 0;
+        while(j < tamanho){
+            lstAux[posAux++] = lst[j++];
+            //posAux = posAux + 1;
+            //j = j + 1; 
+        }
 
-    while((i < meio) && (j < tamanho)) {
-    if(lst[i] < lst[j]) {
-        lstAux[posAux++] = lst[i++];
-    } else {
-        lstAux[posAux++] = lst[j++];
+        //Copia o vetor auxiliar para o vetor original
+        for(i=0; i<tamanho; i++){
+            lst[i] = lstAux[i];
+        }
+        free(lstAux);//Desaloca da memória VetAux
     }
-    }
-
-
-    while (i < meio) {
-        lstAux[posAux++] = lst[i++];
-    }
-
-
-    while (j < tamanho) {
-        lstAux[posAux++] = lst[j++];
-    }
-
-
-    for (i = 0; i < tamanho; i++) {
-        lst[i] = lstAux[i];
-    }
-
-free(lstAux);
 }
+
+
+
+
 
 
 /**
@@ -233,48 +195,50 @@ free(lstAux);
 
 
 void quickSort(tipo_lista *lst) {
-if(lst->contador > 1) {
-quick(lst->lista, 0, lst->contador-1);
-}
+
+    if(lst->contador > 1) {
+        quick(lst->lista, 0, lst->contador-1);
+    }
 }
 
 
 
 void quick(int lst[], int inicio, int fim) {
-int meio, pivo, i_esq, i_dir, aux;
 
-// Calcula o meio e define o valor do pivo
+    int meio, pivo, i_esq, i_dir, aux;
 
-meio = (int)((fim - inicio) / 2 ) + inicio;
+   // Calcula o meio e define o valor do pivo
 
-pivo = lst[meio];
+    meio = (int)((fim - inicio) / 2 ) + inicio;
 
-i_esq = inicio;
+    pivo = lst[meio];
 
-i_dir = fim;
+    i_esq = inicio;
 
+    i_dir = fim;
 
-while(i_esq < i_dir) {
-while(lst[i_esq] < pivo) {
-i_esq++;
+    while(i_esq < i_dir) {
+        while(lst[i_esq] < pivo) {
+            i_esq++;
+    }
+
+    while(lst[i_dir] > pivo) {
+        i_dir--;
+    }
+    if(i_esq < i_dir) {
+        aux = lst[i_esq];
+        lst[i_esq] = lst[i_dir];
+        lst[i_dir] = aux;
+    }
+
 }
+    if ((i_dir > inicio) && ((i_dir-inicio) > 1 )) {
+        quick(lst, inicio, i_dir);
+    }
 
-while(lst[i_dir] > pivo) {
-i_dir--;
-}
-if(i_esq < i_dir) {
-aux = lst[i_esq];
-lst[i_esq] = lst[i_dir];
-lst[i_dir] = aux;
-}
-}
+    if ((i_esq < fim ) && ((fim-i_esq) > 1 )) {
+        quick(lst, i_esq, fim);
+    }
 
 
-if ((i_dir > inicio) && ((i_dir-inicio) > 1 )) {
-quick(lst, inicio, i_dir);
-}
-
-if ((i_esq < fim ) && ((fim-i_esq) > 1 )) {
-quick(lst, i_esq, fim);
-}
 }
